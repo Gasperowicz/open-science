@@ -1,0 +1,5 @@
+.DS_STORE
+/.idea/
+/.vscode/
+!/.idea/php.xml
+!/.vscode/launch.json
