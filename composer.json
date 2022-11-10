@@ -1,0 +1,21 @@
+{
+    "name": "univ-artois/open-science",
+    "type": "project",
+    "require": {
+        "guzzlehttp/guzzle": "^7.5",
+        "ext-ctype": "*",
+        "symfony/console": "^6.2",
+        "twig/twig": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "UnivArtois\\OpenScience\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jeremy Gasperowicz",
+            "email": "jeremy.gasperowicz@univ-artois.fr"
+        }
+    ]
+}

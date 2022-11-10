@@ -1,0 +1,47 @@
+<?php
+
+namespace OpenScience\Shared\Infrastructure\Metrics;
+
+use OpenScience\Shared\Domain\Logger;
+use OpenScience\Shared\Domain\Metrics\TaggableGaugeableCollector as Collector;
+
+class StatsdCollectorFactory
+{
+    private array $platformSettings;
+
+    private Logger $logger;
+
+    private string $systemCode;
+
+    public function __construct(array $platformSettings, array $systemSettings, Logger $logger)
+    {
+        $this->platformSettings = $platformSettings['statsd'];
+        $this->systemCode = $systemSettings['client_system_code'] ?? '';
+        $this->logger = $logger;
+    }
+
+    /**
+    * @return Collector
+    */
+    public function create()
+    {
+        if ($this->platformSettings['host'] && $this->platformSettings['port']) {
+            $this->logger->debug(sprintf(
+                'Pushing application metrics to: StatsD collector on udp://%s:%s',
+                $this->platformSettings['host'],
+                $this->platformSettings['port']
+            ));
+
+            return new DogStatsD(
+                $this->platformSettings['host'],
+                $this->platformSettings['port'],
+                MetricsName\PROJECT_NAMESPACE,
+                $this->systemCode
+            );
+        }
+
+        $this->logger->debug('Pushing application metrics to: Null collector');
+
+        return new NullCollector();
+    }
+}
